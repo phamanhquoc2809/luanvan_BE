@@ -16,7 +16,7 @@ let initWebRoutes = (app) => {
 
 
 
-    return app.use("/", router);
+    return app.use("/home", router);
 }
 
 
