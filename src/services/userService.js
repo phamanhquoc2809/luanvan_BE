@@ -31,8 +31,8 @@ let createNewUser = (data) => {
                 errCode: 0,
                 errMessage: 'OK'
             })
-        } catch (e) {
-            reject(e)
+        } catch (error) {
+            console.log(error);
         }
     })
 }
