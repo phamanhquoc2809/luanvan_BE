@@ -2,19 +2,14 @@ const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
 const sequelize = new Sequelize(
-    'ddu61o70ld20hj',
-    'btdjhzrfgshlhr',
-    '3d3f2eeb1b7cf518411a3b0be5969acae58bd7857b73b35a585dab8e62872622',
+    process.env.DB_DATABASE_NAME,
+    process.env.DB_USERNAME,
+    null,
     {
-        host: 'ec2-3-228-235-79.compute-1.amazonaws.com',
-        dialect: 'postgres',
+        host: process.env.DB_HOST,
+        dialect: 'mysql',
         logging: false,
-        dialectOptions: {
-            ssl: {
-                require: true,
-                rejectUnauthorized: false
-            }
-        }
+
     });
 
 

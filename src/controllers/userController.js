@@ -1,4 +1,5 @@
 import db from "../models/index";
+import user from "../models/user";
 import userService from "../services/userService";
 
 
@@ -36,6 +37,26 @@ let handleGetUserByID = async (req, res) => {
     let findByID = await userService.getUserByID(req.params.id);
     return res.status(200).json(findByID);
 }
+let handleLogin = async (req, res) => {
+    let email = req.body.email;
+    let pwd = req.body.pwd;
+    if (!email || !pwd) {
+        return res.status(500).json({
+            errCode: 1,
+            message: 'Missing inputs parameter!'
+        })
+    }
+    let userData = await userService.login(email, pwd);
+    return res.status(200).json({
+        errCode: userData.errCode,
+        message: userData.errMessage,
+        user: userData.user ? userData.user : {}
+    })
+}
+let handleSearchUser = async (req, res) => {
+    let searchUser = await userService.SearchUser(req.body.search);
+    return res.status(200).json(searchUser);
+}
 
 module.exports = {
     handleCreateNewUser: handleCreateNewUser,
@@ -43,4 +64,6 @@ module.exports = {
     handleDeleteUser: handleDeleteUser,
     handleUpdateUser: handleUpdateUser,
     handleGetUserByID: handleGetUserByID,
+    handleLogin: handleLogin,
+    handleSearchUser: handleSearchUser,
 }

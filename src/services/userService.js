@@ -1,5 +1,7 @@
-import { use } from "express/lib/application";
 import db from "../models/index";
+import Sequelize from "sequelize";
+import bcrypt from "bcryptjs";
+const salt = bcrypt.genSaltSync(10);
 
 
 let getAllUser = () => {
@@ -7,8 +9,9 @@ let getAllUser = () => {
         try {
             let users = await db.Users.findAll();
             resolve(users);
+
         } catch (error) {
-            reject(error);
+            console.log(error);
         }
     })
 };
@@ -16,12 +19,20 @@ let getAllUser = () => {
 let createNewUser = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
+            let checkEmail = await checkUserEmail(data.email);
+            if (checkEmail === true) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Your email is already exist, Please try anther email'
+                })
+            }
+            let hashPwdBcrypt = await hashUserPwd(data.pwd);
             await db.Users.create({
 
                 firstname: data.firstname,
                 lastname: data.lastname,
                 email: data.email,
-                pwd: data.pwd,
+                pwd: hashPwdBcrypt,
                 phone: data.phone,
                 address: data.address,
                 gender: data.gender,
@@ -39,6 +50,7 @@ let createNewUser = (data) => {
 let deleteUser = (UserID) => {
     return new Promise(async (resolve, reject) => {
         try {
+
             let user = await db.Users.findOne({
                 where: { id: UserID },
                 raw: false
@@ -117,10 +129,91 @@ let getUserByID = (UserID) => {
 }
 
 
+let login = (email, pwd) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let userData = {};
+            let userIsExist = await checkUserEmail(email);
+            if (userIsExist) {
+                let user = await db.Users.findOne({
+                    where: { email: email },
+                    attributes: ['email', 'id_permission', 'pwd', 'firstname', 'lastname'],
+                    raw: true
+                });
+                if (user) {
+                    if (email == user.email && pwd == user.pwd) {
+                        userData.errCode = 0;
+                        userData.errMessage = 'Login Success!';
+                        delete user.pwd;
+                        userData.user = user;
+                    } else {
+                        userData.errCode = 3;
+                        userData.errMessage = 'Wrong password';
+                    }
+                } else {
+                    userData.errCode = 2;
+                    userData.errMessage = 'Your not exist!';
+                }
+                resolve(userData);
+            } else {
+                userData.errCode = 1;
+                userData.errMessage = 'Your Email not exist!';
+                resolve(userData);
+            }
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+let checkUserEmail = (InputEmail) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = await db.Users.findOne({
+                where: { email: InputEmail }
+            });
+            if (user) {
+                resolve(true)
+            } else {
+                resolve(false)
+            }
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+let hashUserPwd = (pwd) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let hashPwd = await bcrypt.hashSync(pwd, salt);
+            resolve(hashPwd);
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
+
+let SearchUser = (search) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // let key = "Asus";
+            let products = await db.Users.findAll({
+                where: Sequelize.literal(`MATCH (firstname,lastname) AGAINST(` + `"` + search + `"` + `)`)
+            });
+            resolve(products);
+        } catch (error) {
+            // reject(error);
+            console.log(error);
+        }
+    })
+}
 module.exports = {
     getAllUser: getAllUser,
     createNewUser: createNewUser,
     deleteUser: deleteUser,
     updateUser: updateUser,
     getUserByID: getUserByID,
+    checkUserEmail: checkUserEmail,
+    login: login,
+    SearchUser: SearchUser,
 }

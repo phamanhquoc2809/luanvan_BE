@@ -35,8 +35,17 @@ module.exports = {
       id_permission: {
         allowNull: false,
         type: Sequelize.INTEGER
+      },
+      createdAt: {
+        allowNull: true,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: true,
+        type: Sequelize.DATE
       }
-    });
+
+    }).then(() => queryInterface.addIndex('Users', ['firstname', 'lastname'], { type: 'FULLTEXT' }));
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Users');

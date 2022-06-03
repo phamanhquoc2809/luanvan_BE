@@ -14,6 +14,8 @@ let initUserRouter = (app) => {
     router.post('/create-user', userController.handleCreateNewUser);
     router.delete('/delete-user', userController.handleDeleteUser);
     router.put('/update-user', userController.handleUpdateUser);
+    router.post('/login', userController.handleLogin);
+    router.get('/search-user', userController.handleSearchUser);
 
     // Permission
     router.get('/permiss', permiss.handleGetAllPermiss);

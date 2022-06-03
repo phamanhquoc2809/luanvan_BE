@@ -1,37 +1,26 @@
 {
-  "development": {
-    "username": "btdjhzrfgshlhr",
-    "password": "3d3f2eeb1b7cf518411a3b0be5969acae58bd7857b73b35a585dab8e62872622",
-    "database": "ddu61o70ld20hj",
-    "host": "ec2-3-228-235-79.compute-1.amazonaws.com",
-    "dialect": "postgres",
-    "logging": false,
-    "query": {
-      "raw": true
+    "development": {
+        "username": "root",
+        "password": null,
+        "database": "laptop_lv",
+        "host": "127.0.0.1",
+        "dialect": "mysql",
+        "define": {
+            "timestamps": false
+        }
     },
-    "define": {
-      "timestamps": false
+    "test": {
+        "username": "root",
+        "password": null,
+        "database": "database_test",
+        "host": "127.0.0.1",
+        "dialect": "mysql"
     },
-    "timezone": "+07:00",
-    "dialectOptions": {
-      "ssl": {
-        "require": true,
-        "rejectUnauthorized": false
-      }
+    "production": {
+        "username": "root",
+        "password": null,
+        "database": "database_production",
+        "host": "127.0.0.1",
+        "dialect": "mysql"
     }
-  },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
-  "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  }
 }
