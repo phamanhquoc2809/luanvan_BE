@@ -1,5 +1,4 @@
-import db from "../models/index";
-import user from "../models/user";
+
 import userService from "../services/userService";
 
 
@@ -58,6 +57,7 @@ let handleSearchUser = async (req, res) => {
     return res.status(200).json(searchUser);
 }
 
+
 module.exports = {
     handleCreateNewUser: handleCreateNewUser,
     handleGetAllUser: handleGetAllUser,
@@ -66,4 +66,5 @@ module.exports = {
     handleGetUserByID: handleGetUserByID,
     handleLogin: handleLogin,
     handleSearchUser: handleSearchUser,
+
 }

@@ -6,7 +6,7 @@ import homeController from "../controllers/homeController";
 let router = express.Router();
 
 let initWebRoutes = (app) => {
-    router.get('/', homeController.getHomePage);
+    router.get('/get-all-user', homeController.getHomePage);
     router.post('/create-user', homeController.handleCreateNewUser);
 
 
@@ -14,9 +14,7 @@ let initWebRoutes = (app) => {
         return res.send('hello');
     });
 
-
-
-    return app.use("/home", router);
+    return app.use("/", router);
 }
 
 

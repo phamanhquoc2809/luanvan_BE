@@ -7,7 +7,10 @@ const salt = bcrypt.genSaltSync(10);
 let getAllUser = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            let users = await db.Users.findAll();
+            let users = await db.Users.findAll({
+                attributes: ['id', 'firstname', 'lastname', 'email', 'pwd', 'phone', 'address', 'gender', 'id_permission',],
+                raw: true
+            });
             resolve(users);
 
         } catch (error) {
@@ -128,7 +131,6 @@ let getUserByID = (UserID) => {
     })
 }
 
-
 let login = (email, pwd) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -141,7 +143,8 @@ let login = (email, pwd) => {
                     raw: true
                 });
                 if (user) {
-                    if (email == user.email && pwd == user.pwd) {
+                    let check = await bcrypt.compareSync(pwd, user.pwd)
+                    if (email == user.email && check) {
                         userData.errCode = 0;
                         userData.errMessage = 'Login Success!';
                         delete user.pwd;
@@ -216,4 +219,5 @@ module.exports = {
     checkUserEmail: checkUserEmail,
     login: login,
     SearchUser: SearchUser,
+
 }
