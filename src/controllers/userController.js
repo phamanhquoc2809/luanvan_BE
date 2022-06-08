@@ -4,6 +4,12 @@ import userService from "../services/userService";
 
 let handleCreateNewUser = async (req, res) => {
     let message = await userService.createNewUser(req.body);
+
+    return res.status(200).json(message);
+}
+let handleCreateNewUserTest = async (req, res) => {
+    let message = await userService.createNewUserReal(req.body);
+
     return res.status(200).json(message);
 }
 let handleGetAllUser = async (req, res) => {
@@ -45,7 +51,23 @@ let handleLogin = async (req, res) => {
             message: 'Missing inputs parameter!'
         })
     }
-    let userData = await userService.login(email, pwd);
+    let userData = await userService.loginReal(email, pwd);
+    return res.status(200).json({
+        errCode: userData.errCode,
+        message: userData.errMessage,
+        user: userData.user ? userData.user : {}
+    })
+}
+let handleLoginTest = async (req, res) => {
+    let email = req.body.email;
+    let pwd = req.body.pwd;
+    if (!email || !pwd) {
+        return res.status(500).json({
+            errCode: 1,
+            message: 'Missing inputs parameter!'
+        })
+    }
+    let userData = await userService.loginReal(email, pwd);
     return res.status(200).json({
         errCode: userData.errCode,
         message: userData.errMessage,
@@ -66,5 +88,8 @@ module.exports = {
     handleGetUserByID: handleGetUserByID,
     handleLogin: handleLogin,
     handleSearchUser: handleSearchUser,
+    handleCreateNewUserTest: handleCreateNewUserTest,
+    handleLoginTest: handleLoginTest,
+
 
 }

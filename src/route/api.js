@@ -18,9 +18,11 @@ let initUserRouter = (app) => {
     router.get('/userBy/:id', userController.handleGetUserByID);
 
     router.post('/create-user', userController.handleCreateNewUser);
+    router.post('/create-userTest', userController.handleCreateNewUserTest);
     router.delete('/delete-user', userController.handleDeleteUser);
     router.put('/update-user', userController.handleUpdateUser);
     router.post('/login', userController.handleLogin);
+    router.post('/loginTest', userController.handleLoginTest);
 
     router.get('/search-user', userController.handleSearchUser);
 

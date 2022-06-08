@@ -30,6 +30,7 @@ let createNewUser = (data) => {
                 })
             }
             let hashPwdBcrypt = await hashUserPwd(data.pwd);
+            console.log("check: " + hashPwdBcrypt);
             await db.Users.create({
 
                 firstname: data.firstname,
@@ -43,8 +44,44 @@ let createNewUser = (data) => {
             })
             resolve({
                 errCode: 0,
-                errMessage: 'OK'
+                errMessage: 'OK',
+
             })
+
+        } catch (error) {
+            console.log(error);
+        }
+    })
+}
+
+let createNewUserReal = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let checkEmail = await checkUserEmail(data.email);
+            if (checkEmail === true) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Your email is already exist, Please try anther email'
+                })
+            }
+            let hashPwdBcrypt = await hashUserPwd(data.pwd);
+            await db.Users.create({
+
+                firstname: data.firstname,
+                lastname: data.lastname,
+                email: data.email,
+                pwd: hashPwdBcrypt,
+                phone: data.phone,
+                address: data.address,
+                gender: data.gender,
+                id_permission: data.id_permission,
+            })
+            resolve({
+                errCode: 0,
+                errMessage: 'OK',
+
+            })
+
         } catch (error) {
             console.log(error);
         }
@@ -168,6 +205,43 @@ let login = (email, pwd) => {
         }
     })
 }
+let loginReal = (email, pwd) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let userData = {};
+            let userIsExist = await checkUserEmail(email);
+            if (userIsExist) {
+                let user = await db.Users.findOne({
+                    where: { email: email },
+                    attributes: ['email', 'id_permission', 'pwd', 'firstname', 'lastname'],
+                    raw: true
+                });
+                if (user) {
+                    let check = await bcrypt.compareSync(pwd, user.pwd)
+                    if (email == user.email && check) {
+                        userData.errCode = 0;
+                        userData.errMessage = 'Login Success!';
+                        delete user.pwd;
+                        userData.user = user;
+                    } else {
+                        userData.errCode = 3;
+                        userData.errMessage = 'Wrong password';
+                    }
+                } else {
+                    userData.errCode = 2;
+                    userData.errMessage = 'Your not exist!';
+                }
+                resolve(userData);
+            } else {
+                userData.errCode = 1;
+                userData.errMessage = 'Your Email not exist!';
+                resolve(userData);
+            }
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
 let checkUserEmail = (InputEmail) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -212,12 +286,14 @@ let SearchUser = (search) => {
 }
 module.exports = {
     getAllUser: getAllUser,
-    createNewUser: createNewUser,
+    createNewUserReal: createNewUserReal,
     deleteUser: deleteUser,
     updateUser: updateUser,
     getUserByID: getUserByID,
     checkUserEmail: checkUserEmail,
-    login: login,
+    loginReal: loginReal,
     SearchUser: SearchUser,
+    login: login,
+    createNewUser: createNewUser,
 
 }
