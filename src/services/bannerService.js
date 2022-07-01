@@ -3,27 +3,25 @@ import db from "../models/index";
 
 
 
-let getAllSupplier = () => {
+let getAllBanner = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            let supplier = await db.Supplier.findAll();
-            resolve(supplier);
+            let banner = await db.Banner.findAll();
+            resolve(banner);
         } catch (error) {
             reject(error);
         }
     })
 };
 
-let createSupplier = (data) => {
+let createBanner = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
 
-            await db.Supplier.create({
-                name: data.name,
+            await db.Banner.create({
                 picture: data.picture,
-                phone: data.phone,
-                address: data.address,
-                email: data.email,
+                id_product: data.id_product,
+
             })
 
             resolve({
@@ -36,7 +34,7 @@ let createSupplier = (data) => {
     })
 }
 
-let updateSupplier = (data) => {
+let updateBanner = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!data.id) {
@@ -45,25 +43,23 @@ let updateSupplier = (data) => {
                     errMessage: "Messing requited parameter"
                 });
             }
-            let supplier = await db.Supplier.findOne({
+            let banner = await db.Banner.findOne({
                 where: { id: data.id },
                 raw: false,
             });
-            if (supplier) {
-                supplier.name = data.name;
-                supplier.picture = data.picture;
-                supplier.phone = data.phone;
-                supplier.address = data.address;
-                supplier.email = data.email;
-                await supplier.save();
+            if (banner) {
+                banner.picture = data.picture;
+                banner.id_product = data.id_product;
+
+                await banner.save();
                 resolve({
                     errCode: 0,
-                    errMessage: "Update Coupon Success!"
+                    errMessage: "Update Banner Success!"
                 })
             } else {
                 resolve({
                     errCode: 1,
-                    errMessage: "Coupon is not found!"
+                    errMessage: "Banner is not found!"
                 });
             }
         } catch (error) {
@@ -71,24 +67,24 @@ let updateSupplier = (data) => {
         }
     })
 }
-let deleteSupplier = (SupplierID) => {
+let deleteBanner = (BannerID) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let supplier = await db.Supplier.findOne({
-                where: { id: SupplierID },
+            let banner = await db.Banner.findOne({
+                where: { id: BannerID },
                 raw: false
             })
-            if (!supplier) {
+            if (!banner) {
                 resolve({
                     errCode: 2,
-                    errMessage: 'Supplier is not exist'
+                    errMessage: 'Banner is not exist'
                 })
             } else {
-                await supplier.destroy();
+                await banner.destroy();
             }
             resolve({
                 errCode: 0,
-                errMessage: 'Supplier is delete success'
+                errMessage: 'Banner is delete success'
             })
         } catch (error) {
             reject(error)
@@ -96,8 +92,8 @@ let deleteSupplier = (SupplierID) => {
     })
 }
 module.exports = {
-    getAllSupplier: getAllSupplier,
-    createSupplier: createSupplier,
-    updateSupplier: updateSupplier,
-    deleteSupplier: deleteSupplier,
+    getAllBanner: getAllBanner,
+    createBanner: createBanner,
+    updateBanner: updateBanner,
+    deleteBanner: deleteBanner,
 }

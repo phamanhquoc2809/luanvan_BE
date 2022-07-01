@@ -3,27 +3,26 @@ import db from "../models/index";
 
 
 
-let getAllSupplier = () => {
+let getAllCoupon = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            let supplier = await db.Supplier.findAll();
-            resolve(supplier);
+            let coupon = await db.Coupon.findAll();
+            resolve(coupon);
         } catch (error) {
             reject(error);
         }
     })
 };
 
-let createSupplier = (data) => {
+let createCoupon = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
 
-            await db.Supplier.create({
+            await db.Coupon.create({
                 name: data.name,
-                picture: data.picture,
-                phone: data.phone,
-                address: data.address,
-                email: data.email,
+                cost: data.cost,
+                describe: data.describe,
+                quantity: data.quantity,
             })
 
             resolve({
@@ -36,7 +35,7 @@ let createSupplier = (data) => {
     })
 }
 
-let updateSupplier = (data) => {
+let updateCoupon = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!data.id) {
@@ -45,17 +44,17 @@ let updateSupplier = (data) => {
                     errMessage: "Messing requited parameter"
                 });
             }
-            let supplier = await db.Supplier.findOne({
+            let coupon = await db.Coupon.findOne({
                 where: { id: data.id },
                 raw: false,
             });
-            if (supplier) {
-                supplier.name = data.name;
-                supplier.picture = data.picture;
-                supplier.phone = data.phone;
-                supplier.address = data.address;
-                supplier.email = data.email;
-                await supplier.save();
+            if (coupon) {
+                coupon.name = data.name;
+
+                coupon.cost = data.cost;
+                coupon.describe = data.describe;
+                coupon.quantity = data.quantity;
+                await coupon.save();
                 resolve({
                     errCode: 0,
                     errMessage: "Update Coupon Success!"
@@ -71,24 +70,24 @@ let updateSupplier = (data) => {
         }
     })
 }
-let deleteSupplier = (SupplierID) => {
+let deleteCoupon = (CouponID) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let supplier = await db.Supplier.findOne({
-                where: { id: SupplierID },
+            let coupon = await db.Coupon.findOne({
+                where: { id: CouponID },
                 raw: false
             })
-            if (!supplier) {
+            if (!coupon) {
                 resolve({
                     errCode: 2,
-                    errMessage: 'Supplier is not exist'
+                    errMessage: 'Coupon is not exist'
                 })
             } else {
-                await supplier.destroy();
+                await coupon.destroy();
             }
             resolve({
                 errCode: 0,
-                errMessage: 'Supplier is delete success'
+                errMessage: 'Coupon is delete success'
             })
         } catch (error) {
             reject(error)
@@ -96,8 +95,8 @@ let deleteSupplier = (SupplierID) => {
     })
 }
 module.exports = {
-    getAllSupplier: getAllSupplier,
-    createSupplier: createSupplier,
-    updateSupplier: updateSupplier,
-    deleteSupplier: deleteSupplier,
+    getAllCoupon: getAllCoupon,
+    createCoupon: createCoupon,
+    updateCoupon: updateCoupon,
+    deleteCoupon: deleteCoupon,
 }

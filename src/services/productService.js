@@ -36,9 +36,9 @@ let SearchProduct = (key) => {
     return new Promise(async (resolve, reject) => {
         try {
             let products = await db.Product.findAll({
-                where: Sequelize.literal(`MATCH (name, ram, chip, memory,display) AGAINST(`+`'`+ key +`'`+`)`),
-                
-        });
+                where: Sequelize.literal(`MATCH (name, ram, chip, memory,display,color,content) AGAINST(` + `'` + key + `'` + `)`),
+
+            });
             resolve(products);
         } catch (error) {
             // reject(error);
@@ -102,36 +102,36 @@ let updateProduct = (data) => {
                 raw: false,
             });
             if (product) {
-                product.name= data.name,
-                product.price= data.price,
-                product.quantity= data.quantity,
-                product.picture= data.picture,
-                product.content= data.content,
-                product.summary= data.summary,
-                product.ram= data.ram,
-                product.chip= data.chip,
-                product.card= data.card,
-                product.display= data.display,
-                product.memory= data.memory,
-                product.port= data.port,
-                product.operation= data.operation,
-                product.pin= data.pin,
-                product.dpi= data.dpi,
-                product.micro_switch= data.micro_switch,
-                product.scroll_switch= data.scroll_switch,
-                product.durability= data.durability,
-                product.keyboard_type= data.keyboard_type,
-                product.model= data.model,
-                product.connect= data.connect,
-                product.weight= data.weight,
-                product.size= data.size,
-                product.color= data.color,
-                product.material= data.material,
-                product.insurance= data.insurance,
-                product.status= data.status,
-                product.id_cate= data.id_cate,
+                product.name = data.name,
+                    product.price = data.price,
+                    product.quantity = data.quantity,
+                    product.picture = data.picture,
+                    product.content = data.content,
+                    product.summary = data.summary,
+                    product.ram = data.ram,
+                    product.chip = data.chip,
+                    product.card = data.card,
+                    product.display = data.display,
+                    product.memory = data.memory,
+                    product.port = data.port,
+                    product.operation = data.operation,
+                    product.pin = data.pin,
+                    product.dpi = data.dpi,
+                    product.micro_switch = data.micro_switch,
+                    product.scroll_switch = data.scroll_switch,
+                    product.durability = data.durability,
+                    product.keyboard_type = data.keyboard_type,
+                    product.model = data.model,
+                    product.connect = data.connect,
+                    product.weight = data.weight,
+                    product.size = data.size,
+                    product.color = data.color,
+                    product.material = data.material,
+                    product.insurance = data.insurance,
+                    product.status = data.status,
+                    product.id_cate = data.id_cate,
 
-                await product.save();
+                    await product.save();
                 resolve({
                     errCode: 0,
                     errMessage: "Update Product Success!"
@@ -174,9 +174,9 @@ let deleteProduct = (ProductID) => {
 
 module.exports = {
     getAllProduct: getAllProduct,
-    getProductByID:getProductByID,
-    SearchProduct:SearchProduct,
-    createProduct:createProduct,
-    updateProduct:updateProduct,
-    deleteProduct:deleteProduct,
+    getProductByID: getProductByID,
+    SearchProduct: SearchProduct,
+    createProduct: createProduct,
+    updateProduct: updateProduct,
+    deleteProduct: deleteProduct,
 }

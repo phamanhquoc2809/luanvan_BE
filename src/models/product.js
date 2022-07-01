@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Product.hasMany(models.Category, {foreignKey: 'id', as: 'catedata'})
+      Product.hasMany(models.Category, { foreignKey: 'id', as: 'catedata' })
     }
   };
   Product.init({
@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     memory: DataTypes.STRING,
     port: DataTypes.STRING,
     operation: DataTypes.STRING,
+
     pin: DataTypes.STRING,
     dpi: DataTypes.FLOAT,
     micro_switch: DataTypes.INTEGER,
@@ -46,14 +47,14 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
   },
-  {
-    sequelize,
-    modelName: 'Product',
-    indexes: [
+    {
+      sequelize,
+      modelName: 'Product',
+      indexes: [
         // add a FULLTEXT index
-        { type: 'FULLTEXT', name: 'text_idx', fields: ['name','ram','chip','display','memory'] }
+        { type: 'FULLTEXT', name: 'text_idx', fields: ['name', 'ram', 'chip', 'display', 'memory'] }
       ]
-  });
+    });
   return Product;
 };
 

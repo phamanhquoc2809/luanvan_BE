@@ -3,27 +3,28 @@ import db from "../models/index";
 
 
 
-let getAllSupplier = () => {
+let getAllComment = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            let supplier = await db.Supplier.findAll();
-            resolve(supplier);
+            let comment = await db.Comment.findAll();
+            resolve(comment);
         } catch (error) {
             reject(error);
         }
     })
 };
 
-let createSupplier = (data) => {
+let createComment = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
 
-            await db.Supplier.create({
-                name: data.name,
-                picture: data.picture,
-                phone: data.phone,
-                address: data.address,
-                email: data.email,
+            await db.Comment.create({
+                content: data.content,
+
+                star: data.star,
+                status: data.status,
+                id_product: data.id_product,
+                id_user: data.id_user,
             })
 
             resolve({
@@ -36,7 +37,7 @@ let createSupplier = (data) => {
     })
 }
 
-let updateSupplier = (data) => {
+let updateComment = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!data.id) {
@@ -45,25 +46,26 @@ let updateSupplier = (data) => {
                     errMessage: "Messing requited parameter"
                 });
             }
-            let supplier = await db.Supplier.findOne({
+            let comment = await db.Comment.findOne({
                 where: { id: data.id },
                 raw: false,
             });
-            if (supplier) {
-                supplier.name = data.name;
-                supplier.picture = data.picture;
-                supplier.phone = data.phone;
-                supplier.address = data.address;
-                supplier.email = data.email;
-                await supplier.save();
+            if (comment) {
+                comment.content = data.content;
+                comment.star = data.star;
+
+                comment.status = data.status;
+                comment.id_product = data.id_product;
+                comment.id_user = data.id_user;
+                await comment.save();
                 resolve({
                     errCode: 0,
-                    errMessage: "Update Coupon Success!"
+                    errMessage: "Update Comment Success!"
                 })
             } else {
                 resolve({
                     errCode: 1,
-                    errMessage: "Coupon is not found!"
+                    errMessage: "Comment is not found!"
                 });
             }
         } catch (error) {
@@ -71,24 +73,25 @@ let updateSupplier = (data) => {
         }
     })
 }
-let deleteSupplier = (SupplierID) => {
+/// chi moi get comment
+let deleteComment = (CommentID) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let supplier = await db.Supplier.findOne({
-                where: { id: SupplierID },
+            let comment = await db.Comment.findOne({
+                where: { id: CommentID },
                 raw: false
             })
-            if (!supplier) {
+            if (!comment) {
                 resolve({
                     errCode: 2,
-                    errMessage: 'Supplier is not exist'
+                    errMessage: 'Comment is not exist'
                 })
             } else {
-                await supplier.destroy();
+                await comment.destroy();
             }
             resolve({
                 errCode: 0,
-                errMessage: 'Supplier is delete success'
+                errMessage: 'Comment is delete success'
             })
         } catch (error) {
             reject(error)
@@ -96,8 +99,8 @@ let deleteSupplier = (SupplierID) => {
     })
 }
 module.exports = {
-    getAllSupplier: getAllSupplier,
-    createSupplier: createSupplier,
-    updateSupplier: updateSupplier,
-    deleteSupplier: deleteSupplier,
+    getAllComment: getAllComment,
+    createComment: createComment,
+    updateComment: updateComment,
+    deleteComment: deleteComment,
 }

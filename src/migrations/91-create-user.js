@@ -33,8 +33,12 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       id_permission: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        type: Sequelize.INTEGER
+        references: {
+          model: 'permissions',
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: true,

@@ -33,10 +33,14 @@ let getCateByID = (CateID) => {
 let createCate = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
+            // let order = 
             await db.Category.create({
 
                 category: data.category,
             })
+            // let detailorder = await db.DetailOrder.create({
+            //     idorder: order.id
+            // })
             resolve({
                 errCode: 0,
                 errMessage: 'OK'
@@ -106,6 +110,6 @@ module.exports = {
     getAllCate: getAllCate,
     getCateByID: getCateByID,
     createCate: createCate,
-    updateCate:updateCate,
-    deleteCate:deleteCate,
+    updateCate: updateCate,
+    deleteCate: deleteCate,
 }
