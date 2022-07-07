@@ -13,6 +13,20 @@ let handleGetProcductByID = async (req, res) => {
     let findByID = await productService.getProductByID(req.body.id);
     return res.status(200).json(findByID);
 }
+
+let handleGetProcductByType = async (req, res) => {
+    try {
+        let findByID = await productService.getProductByType(req.query.type);
+        return res.status(200).json(findByID);
+    } catch (error) {
+        console.log('Get all Product', error);
+        return res.status(200).json({
+            errCode: -1,
+            errMessage: 'Error from server'
+        })
+    }
+
+}
 let handleSearchProcduct = async (req, res) => {
     let findByID = await productService.SearchProduct(req.body.key);
     return res.status(200).json(findByID);
@@ -42,8 +56,9 @@ let handleDeleteProduct = async (req, res) => {
 module.exports = {
     handleGetAllProduct: handleGetAllProduct,
     handleGetProcductByID: handleGetProcductByID,
-    handleSearchProcduct:handleSearchProcduct,
-    handleCreateProduct:handleCreateProduct,
-    handleUpdateProduct:handleUpdateProduct,
-    handleDeleteProduct:handleDeleteProduct,
+    handleSearchProcduct: handleSearchProcduct,
+    handleCreateProduct: handleCreateProduct,
+    handleUpdateProduct: handleUpdateProduct,
+    handleDeleteProduct: handleDeleteProduct,
+    handleGetProcductByType: handleGetProcductByType
 }

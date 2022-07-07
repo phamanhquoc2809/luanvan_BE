@@ -12,6 +12,26 @@ let getAllProduct = () => {
         }
     })
 }
+let getProductByType = (type) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let product = await db.Product.findOne({
+                where: { category: type },
+                raw: false
+            })
+            if (!product) {
+                resolve({
+                    errCode: 2,
+                    errMessage: 'The product is not exist'
+                })
+            }
+            resolve(product);
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
 let getProductByID = (ProductID) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -179,4 +199,5 @@ module.exports = {
     createProduct: createProduct,
     updateProduct: updateProduct,
     deleteProduct: deleteProduct,
+    getProductByType: getProductByType
 }

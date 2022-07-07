@@ -7,7 +7,8 @@ import couPonController from "../controllers/couponController";
 import bannerController from "../controllers/bannerController";
 import commnetController from "../controllers/commentController";
 import supplierController from "../controllers/supplierController";
-
+import newsController from "../controllers/newsController";
+import receiptController from "../controllers/receiptController";
 
 
 
@@ -52,6 +53,7 @@ let initUserRouter = (app) => {
     router.post('/create-product', productController.handleCreateProduct);
     router.put('/update-product', productController.handleUpdateProduct);
     router.delete('/delete-product', productController.handleDeleteProduct);
+    router.get('/getproductbytype', productController.handleGetProcductByType);
 
 
     //coupon 
@@ -80,6 +82,21 @@ let initUserRouter = (app) => {
     router.post('/create-supplier', supplierController.handleCreateSupplier);
     router.put('/update-supplier', supplierController.handleUpdateSupplier);
     router.delete('/delete-supplier', supplierController.handleDeleteSupplier);
+
+
+    // news
+    router.get('/news', newsController.handleGetAllNews);
+    router.post('/create-news', newsController.handleCreateNews);
+    router.put('/update-news', newsController.handleUpdateNews);
+    router.delete('/delete-news', newsController.handleDeleteNews);
+
+
+    // receipt
+    router.get('/receipt', receiptController.handleGetAllReceipt);
+    router.get('/receipt/:id', receiptController.handleGetReceiptByID);
+    router.post('/create-receipt', receiptController.handleCreateReceipt);
+    router.put('/update-receipt', receiptController.handleUpdateReceipt);
+    router.delete('/delete-receipt', receiptController.handleDeleteReceipt);
 
     router.get('/anhquoc', (req, res) => {
         return res.send('hello');
